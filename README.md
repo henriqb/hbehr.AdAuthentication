@@ -19,8 +19,8 @@ Configure
       string ldapPath = "LDAP://DC=radixengrj,DC=matriz";
       string ldapDomain = "radixengrj";
       adAuthenticator
-          .ConfigureSetLdapPath(WebConfigConstants.LdapPath)
-          .ConfigureLdapDomain(WebConfigConstants.LdapDomain);
+          .ConfigureSetLdapPath(ldapPath)
+          .ConfigureLdapDomain(ldapDomain);
           
 If you are using Windows Authentication, to fetch the user using the system:
 
@@ -56,9 +56,9 @@ User Ad:
 
        public class ADUser
        {
-           public string Name {get; private set; }
-           public string Login {get; private set; }
-           public IEnumerable <AdGroup> AdGroups {get; private set; }
+           public string Name { get; private set; }
+           public string Login { get; private set; }
+           public IEnumerable <AdGroup> AdGroups { get; private set; }
        }
       
 Ad Groups:
