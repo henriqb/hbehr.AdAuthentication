@@ -1,9 +1,9 @@
 AdAuthenticator
 ==============
 
-Ad authenticator implements web, fast and convenient. Can be used with windows authentication and login / password.
+Implements Ad authenticator for asp.net, fast and convenient. Can be used with windows authentication and login / password.
 
-*Implementa autenticador Ad web, rápido e prático. Pode ser usado com windows authentication ou login/senha.*
+*Implementa autenticador Ad para asp.net, rápido e prático. Pode ser usado com windows authentication ou login/senha.*
 
 ## How to use
 Create a new instance of the class
