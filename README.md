@@ -1,35 +1,46 @@
 AdAuthenticator
 ==============
 
-Implementa autenticador Ad web, rápido e prático. Pode ser usado com windows authentication ou login/senha.
+Ad authenticator implements web, fast and convenient. Can be used with windows authentication and login / password.
 
+*Implementa autenticador Ad web, rápido e prático. Pode ser usado com windows authentication ou login/senha.*
 
-##Como Usar
-Criar uma nova instância da classe
+## How to use
+Create a new instance of the class
+
+*Criar uma nova instância da classe*
 
       AdAuthenticator adAuthenticator = new AdAuthenticator();
 
-Configurar
+Configure
+
+*Configurar*,
 
       string ldapPath = "LDAP://DC=radixengrj,DC=matriz";
       string ldapDomain = "radixengrj";
       adAuthenticator
           .ConfigureSetLdapPath(WebConfigConstants.LdapPath)
-          .ConfigureLdapDomain(WebConfigConstants.LdapDomain)
+          .ConfigureLdapDomain(WebConfigConstants.LdapDomain);
           
-Se estiver usando windows Authentication, para buscar o usuário que está usando o sistema:
+If you are using Windows Authentication, to fetch the user using the system:
 
-      AdUser adUser = adAuthenticator.GetUserFromAd();
+*Se estiver usando windows Authentication, para buscar o usuário que está usando o sistema:*
+
+       AdUser adUser = adAuthenticator.GetUserFromAd();
       
-Caso queira autenticar via login/senha, usar a função:
+If you want to authenticate via login / password, use the function:
+
+*Caso queira autenticar via login/senha, usar a função:*
 
       string login = "henrique.behr";
       string password = "*******";
       AdUser adUser = adAuthenticator.SearchUserBy(login, password);
       
       
-Suporta *method-chain*:
-      
+Supports *method-chain* :
+
+*Suporta method-chain:*
+
       string ldapPath = "LDAP://DC=radixengrj,DC=matriz";
       string ldapDomain = "radixengrj";
       AdUser adUser = new AdAuthenticator()
@@ -37,31 +48,35 @@ Suporta *method-chain*:
           .ConfigureLdapDomain(ldapDomain)
           .GetUserFromAd();
           
-##Estrutura de Dados
+##Data Structure
 
-Usuário Ad:
+User Ad:
 
-      public class AdUser
-      {
-          public string Name { get; private set; }
-          public string Login { get; private set; }
-          public IEnumerable<AdGroup> AdGroups { get; private set; }
-      }
+*Usuário Ad*
+
+       public class ADUser
+       {
+           public string Name {get; private set; }
+           public string Login {get; private set; }
+           public IEnumerable <AdGroup> AdGroups {get; private set; }
+       }
       
-Grupos do Ad:
+Ad Groups:
 
-      public class AdGroup
-      {
-          public string Name { get; set; }
-      }
+*Grupos Ad*
+
+       public class AdGroup
+       {
+           public string Name {get; set; }
+       }
       
-####Tipos de erro
+#### Error Types
 
-As exceções lançadas são do tipo: **AdException**, elas vem com uma identificação *AdError* os erros que são tratados incluem:
+The exceptions thrown are of type: **AdException**, they come with an identification *AdError* errors that are treated include:
 
+*As exceções lançadas são do tipo: **AdException**, elas vem com uma identificação AdError os erros que são tratados incluem:*
 
-        Generic *Erro não detectado*
-        InvalidLdapDomain *Ldap Domain invalido, verificar configuração de erro*
-        UserNotFound *Login de usuário não encontrado no AD*
-        IncorrectPassword *Login encontrado, mas senha incorreta*
-    
+         Generic Error *not detected*
+         InvalidLdapDomain * Invalid Ldap Domain, verify network configuration *
+         UserNotFound * Login user not found in AD *
+         IncorrectPassword * Login found but incorrect password *
