@@ -29,8 +29,8 @@ namespace AdAuthentication
 {
     public class AdAuthenticator
     {
-        private string LdapDomain { get; set; }
-        private string LdapPath { get; set; }
+        internal string LdapDomain { get; set; }
+        internal string LdapPath { get; set; }
 
         public AdAuthenticator ConfigureLdapDomain(string ldapDomain)
         {
@@ -46,16 +46,17 @@ namespace AdAuthentication
 
         public AdUser SearchUserBy(string login, string password)
         {
-            ValidarConfiguracao();
-            ValidarParametros(login, password);
+            new Validator(this)
+                .ValidateConfiguration()
+                .ValidateParameters(login, password)
+                .ValidateUserPasswordAtAd(login, password);
 
-            ValidarUsuarioSenhaAd(login, password);
             return GetUserFromAdBy(login);
         }
 
         public AdUser GetUserFromAd()
         {
-            ValidarConfiguracao();
+            new Validator(this).ValidateConfiguration();
 
             if (!HttpContext.Current.User.Identity.IsAuthenticated)
             {
@@ -66,8 +67,27 @@ namespace AdAuthentication
             return GetUserFromAdBy(login);
         }
 
+        public AdGroup GetAdGroups()
+        {
+            new Validator(this).ValidateConfiguration();
+        }
+
         private AdUser GetUserFromAdBy(string login)
-        {   
+        {
+            PrincipalContext principalContext = GetPrincipalContext();
+
+            Principal principal = Principal.FindByIdentity(principalContext, login);
+
+            if (principal == null)
+            {
+                throw new AdException(AdError.UserNotFound, "User not found");
+            }
+            return new AdUser(principal, principal.GetGroups(principalContext));
+        }
+
+        
+        private PrincipalContext GetPrincipalContext()
+        {
             PrincipalContext principalContext;
             try
             {
@@ -81,58 +101,7 @@ namespace AdAuthentication
             {
                 throw new AdException(e);
             }
-
-            Principal principal = Principal.FindByIdentity(principalContext, login);
-
-            if (principal == null)
-            {
-                throw new AdException(AdError.UserNotFound, "User not found");
-            }
-            return new AdUser(principal, principal.GetGroups(principalContext));
-        }
-
-        private void ValidarUsuarioSenhaAd(string login, string senha)
-        {
-            try
-            {
-                DirectoryEntry entry = new DirectoryEntry(LdapPath, login, senha);
-            }
-            catch (DirectoryServicesCOMException e)
-            {
-                if (e.ErrorCode == -2147023570)
-                {
-                    throw new AdException(AdError.IncorrectPassword, "Invalid Password");
-                }
-                throw new AdException(AdError.UserNotFound, "User not found");
-            }
-            catch (Exception e)
-            {
-                throw new AdException(e);
-            }
-        }
-
-        private static void ValidarParametros(string login, string senha)
-        {
-            if (string.IsNullOrWhiteSpace(login))
-            {
-                throw new ArgumentNullException("login");
-            }
-            if (string.IsNullOrWhiteSpace("senha"))
-            {
-                throw new ArgumentNullException("senha");
-            }
-        }
-
-        private void ValidarConfiguracao()
-        {
-            if (string.IsNullOrWhiteSpace(LdapDomain))
-            {
-                throw new AdException("LDAP Domain not configured");
-            }
-            if (string.IsNullOrWhiteSpace(LdapPath))
-            {
-                throw new AdException("LDAP Path not configured");
-            }
+            return principalContext;
         }
     }
 }
