@@ -21,8 +21,9 @@
  * SOFTWARE.
  */
 using System;
-using System.DirectoryServices;
+using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
+using System.Linq;
 using System.Web;
 
 namespace AdAuthentication
@@ -67,9 +68,20 @@ namespace AdAuthentication
             return GetUserFromAdBy(login);
         }
 
-        public AdGroup GetAdGroups()
+        public IEnumerable<AdGroup> GetAdGroups()
         {
             new Validator(this).ValidateConfiguration();
+
+            PrincipalContext principalContext = GetPrincipalContext();
+            
+            GroupPrincipal queryForGroups = new GroupPrincipal(principalContext);
+            PrincipalSearcher results = new PrincipalSearcher(queryForGroups);
+
+            return results.FindAll().Select(found => new AdGroup
+            {
+                Code = found.SamAccountName,
+                Name = found.DisplayName
+            });
         }
 
         private AdUser GetUserFromAdBy(string login)
@@ -84,14 +96,12 @@ namespace AdAuthentication
             }
             return new AdUser(principal, principal.GetGroups(principalContext));
         }
-
         
         private PrincipalContext GetPrincipalContext()
         {
-            PrincipalContext principalContext;
             try
             {
-                principalContext = new PrincipalContext(ContextType.Domain, LdapDomain);
+                return new PrincipalContext(ContextType.Domain, LdapDomain);
             }
             catch (PrincipalServerDownException)
             {
@@ -101,7 +111,6 @@ namespace AdAuthentication
             {
                 throw new AdException(e);
             }
-            return principalContext;
         }
     }
 }

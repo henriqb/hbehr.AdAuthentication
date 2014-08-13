@@ -33,7 +33,7 @@ namespace AdAuthentication
         {
             Name = principal.DisplayName;
             Login = principal.SamAccountName;
-            AdGroups = groups.Select(x => new AdGroup { Name = x.SamAccountName });
+            AdGroups = groups.Select(x => new AdGroup { Name = x.DisplayName, Code = x.SamAccountName });
         }
 
         public string Name { get; private set; }
