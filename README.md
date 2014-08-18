@@ -36,7 +36,14 @@ If you want to authenticate via login / password, use the function:
       string password = "*******";
       AdUser adUser = adAuthenticator.SearchUserBy(login, password);
       
-      
+If you want to search an user in the AD Directory using the login:
+
+*Para buscar um usuário no Diretório AD pelo login:*
+
+	 string login = "henrique.behr"
+	 AdUser adUser = adAuthentication.GetUserFromAdBy(login);
+
+	  
 Supports *method-chain* :
 
 *Suporta method-chain:*

@@ -84,7 +84,7 @@ namespace AdAuthentication
             });
         }
 
-        private AdUser GetUserFromAdBy(string login)
+        public AdUser GetUserFromAdBy(string login)
         {
             PrincipalContext principalContext = GetPrincipalContext();
 
