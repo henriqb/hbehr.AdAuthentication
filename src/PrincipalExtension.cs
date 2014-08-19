@@ -1,6 +1,6 @@
-/*
+﻿/*
  * The MIT License (MIT)
- * Copyright (c) 2014 Henrique Borba Behr
+ * Copyright (c) 2014 Stéfano Bassan
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,30 +20,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-using System.Collections.Generic;
+using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
-using System.Linq;
 
 namespace AdAuthentication
 {
-    public class AdUser
+    internal static class PrincipalExtension
     {
-        public AdUser() {}
-        public AdUser(Principal principal, IEnumerable<Principal> groups)
+        private static string GetProperty(this Principal principal, string property)
         {
-            Name = principal.DisplayName;
-            Login = principal.SamAccountName;
-            Mail = principal.GetMail();
-            Phone = principal.GetPhone();
-            Company = principal.GetCompany();
-            AdGroups = groups.Select(x => new AdGroup { Name = x.DisplayName, Code = x.SamAccountName });
+            var directoryEntry = principal.GetUnderlyingObject() as DirectoryEntry;
+            return directoryEntry != null && directoryEntry.Properties.Contains(property) ? directoryEntry.Properties[property].Value.ToString() : "";
         }
 
-        public string Name { get; private set; }
-        public string Login { get; private set; }
-        public string Mail { get; private set; }
-        public string Phone { get; private set; }
-        public string Company { get; private set; }
-        public IEnumerable<AdGroup> AdGroups { get; private set; }
+        internal static string GetMail(this Principal principal)
+        {
+            return principal.GetProperty("mail");
+        }
+
+        internal static string GetPhone(this Principal principal)
+        {
+            return principal.GetProperty("telephoneNumber");
+        }
+
+        internal static string GetCompany(this Principal principal)
+        {
+            return principal.GetProperty("company");
+        }
     }
 }
