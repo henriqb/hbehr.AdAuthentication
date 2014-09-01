@@ -64,7 +64,21 @@ namespace AdAuthentication
         {
             try
             {
+                DirectoryEntry entry = new DirectoryEntry(_adAuthenticator.LdapPath);
+                Object objnative = entry.NativeObject;
+            }
+            catch (DirectoryServicesCOMException e)
+            {
+                if (e.ErrorCode == -2147016661)
+                {
+                    throw new AdException(AdError.InvalidLdapPath, "Invalid Ldap Path");
+                }
+            }
+
+            try
+            {
                 DirectoryEntry entry = new DirectoryEntry(_adAuthenticator.LdapPath, login, senha);
+                Object objnative = entry.NativeObject;
                 return this;
             }
             catch (DirectoryServicesCOMException e)

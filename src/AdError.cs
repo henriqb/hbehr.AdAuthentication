@@ -25,6 +25,7 @@ namespace AdAuthentication
     public enum AdError
     {
         Generic,
+        InvalidLdapPath,
         InvalidLdapDomain,
         UserNotFound,
         IncorrectPassword
