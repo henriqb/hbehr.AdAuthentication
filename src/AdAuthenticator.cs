@@ -74,8 +74,8 @@ namespace AdAuthentication
 
             PrincipalContext principalContext = GetPrincipalContext();
             
-            GroupPrincipal queryForGroups = new GroupPrincipal(principalContext);
-            PrincipalSearcher results = new PrincipalSearcher(queryForGroups);
+            var queryForGroups = new GroupPrincipal(principalContext);
+            var results = new PrincipalSearcher(queryForGroups);
 
             return results.FindAll().Select(found => new AdGroup
             {
@@ -103,13 +103,13 @@ namespace AdAuthentication
             {
                 return new PrincipalContext(ContextType.Domain, LdapDomain);
             }
-            catch (PrincipalServerDownException)
+            catch (PrincipalServerDownException e)
             {
-                throw new AdException(AdError.InvalidLdapDomain, "Ldap Domain not found");
+                throw new AdException(AdError.InvalidLdapDomain, "Ldap Domain not found", e);
             }
             catch (Exception e)
             {
-                throw new AdException(e);
+                throw new AdException("Unkown Error", e);
             }
         }
     }

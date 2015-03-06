@@ -22,12 +22,17 @@
  */
 using System;
 using System.DirectoryServices;
+using System.Runtime.InteropServices;
 
 namespace AdAuthentication
 {
     internal class Validator
     {
         private readonly AdAuthenticator _adAuthenticator;
+        private const int WrongUserOrPassword = -2147023570;
+        private const int InvalidLdapPath1 = -2147016661;
+        private const int InvalidLdapPath2 = -2147467259;
+        private const int InvalidLdapPathComError = -2147467259;
 
         public Validator(AdAuthenticator adAuthenticator)
         {
@@ -64,34 +69,38 @@ namespace AdAuthentication
         {
             try
             {
-                DirectoryEntry entry = new DirectoryEntry(_adAuthenticator.LdapPath);
+                var entry = new DirectoryEntry(_adAuthenticator.LdapPath, login, senha);
                 Object objnative = entry.NativeObject;
-            }
-            catch (DirectoryServicesCOMException e)
-            {
-                if (e.ErrorCode == -2147016661)
+                if (objnative == null) 
                 {
-                    throw new AdException(AdError.InvalidLdapPath, "Invalid Ldap Path");
+                    throw new Exception();
                 }
-            }
-
-            try
-            {
-                DirectoryEntry entry = new DirectoryEntry(_adAuthenticator.LdapPath, login, senha);
-                Object objnative = entry.NativeObject;
                 return this;
             }
             catch (DirectoryServicesCOMException e)
             {
-                if (e.ErrorCode == -2147023570)
+                if (e.ErrorCode == InvalidLdapPath1 || e.ErrorCode == InvalidLdapPath2)
                 {
-                    throw new AdException(AdError.IncorrectPassword, "Invalid Password");
+                    throw new AdException(AdError.InvalidLdapPath, "Invalid Ldap Path", e);
                 }
-                throw new AdException(AdError.UserNotFound, "User not found");
+                if (e.ErrorCode == WrongUserOrPassword)
+                {
+                    _adAuthenticator.GetUserFromAdBy(login); // throws AdError.UserNotFound if user dosen't exists !
+                    throw new AdException(AdError.IncorrectPassword, "Invalid Password", e); // Or the password is wrong !
+                }
+                throw;
+            }
+            catch (COMException e)
+            {
+                if (e.ErrorCode == InvalidLdapPathComError)
+                {
+                    throw new AdException(AdError.InvalidLdapPath, "Invalid Ldap Path", e);
+                }
+                throw;
             }
             catch (Exception e)
             {
-                throw new AdException(e);
+                throw new AdException("Unkown Error", e);
             }
         }
     }

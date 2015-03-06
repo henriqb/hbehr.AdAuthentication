@@ -20,50 +20,132 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-using System;
+using System.Linq;
 using AdAuthentication;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTest
 {
     [TestClass]
-    public class UnitTest
+    public class AdTest
     {
+        private const string LdapPath = "LDAP://DC=radixengrj,DC=matriz";
+        private const string LdapDomain = "radixengrj";
+        private const string RightUser = "henrique.beh";
+        private const string RightPassword = "xxxxx-sua-senha-aqui-xxxxxx";
+
         [TestMethod]
+        public void RightPasswordTest()
+        {
+            AdUser user = new AdAuthenticator()
+                .ConfigureSetLdapPath(LdapPath)
+                .ConfigureLdapDomain(LdapDomain)
+                .SearchUserBy(RightUser, RightPassword);
+
+            Assert.IsNotNull(user);
+            Assert.AreEqual("henrique.beh", user.Login);
+        }
+
+        [TestMethod]
+        public void RetrievesGroupsFromUserTest()
+        {
+            AdUser user = new AdAuthenticator()
+                .ConfigureSetLdapPath(LdapPath)
+                .ConfigureLdapDomain(LdapDomain)
+                .SearchUserBy(RightUser, RightPassword);
+
+            Assert.IsNotNull(user.AdGroups);
+            Assert.IsTrue(user.AdGroups.Any());
+            Assert.IsTrue(user.AdGroups.Any(x => "Usuários do domínio".Equals(x.Code)));
+        }
+
+        [TestMethod]
+        public void RetrivesGroupsFromAdTest()
+        {
+            AdGroup[] groups = new AdAuthenticator()
+                .ConfigureSetLdapPath(LdapPath)
+                .ConfigureLdapDomain(LdapDomain)
+                .GetAdGroups().ToArray();
+
+            Assert.IsNotNull(groups);
+            Assert.IsTrue(groups.Any());
+            Assert.IsTrue(groups.Any(x => "Usuários do domínio".Equals(x.Code)));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(AdException))]
         public void WrongPasswordTest()
         {
-            AdUser user;
+            const string wrongPassword = "Lepo-Lepo-Lepo";
             try
             {
-                user = new AdAuthenticator()
-                    .ConfigureSetLdapPath("LDAP://DC=radixengrj,DC=matriz")
-                    .ConfigureLdapDomain("radixengrj")
-                    .SearchUserBy("stefano.bassan", "asddasd");
+                new AdAuthenticator()
+                    .ConfigureSetLdapPath(LdapPath)
+                    .ConfigureLdapDomain(LdapDomain)
+                    .SearchUserBy(RightUser, wrongPassword);
             }
-            catch (Exception e)
+            catch (AdException e)
             {
-                var adException = (AdException) e;
-                string erro;
-                switch (adException.AdError)
-                {
-                    case AdError.InvalidLdapDomain:
-                    case AdError.InvalidLdapPath:
-                        erro = "Servidor não configurado";
-                        break;
-                    case AdError.UserNotFound:
-                        erro = "Usuário não existe no Ad";
-                        break;
-                    case AdError.IncorrectPassword:
-                        erro = "Senha incorreta";
-                        break;
-                }
-
-                var texto = e.Message;
+                Assert.AreEqual(AdError.IncorrectPassword, e.AdError);
+                throw;
             }
-            //var adUser = new AdAuthenticator()
-               //.ConfigureSetLdapPath("LDAP://DC=radixengrj,DC=matriz")
-               //.ConfigureLdapDomain("radixengrj")
-               //.SearchUserBy("stefano.bassan", "sdf");
+        }
+        
+        [TestMethod]
+        [ExpectedException(typeof(AdException))]
+        public void WrongUserTest()
+        {
+            const string wrongUser = "Lepo-Lepo-Lepo";
+            try
+            {
+                new AdAuthenticator()
+                    .ConfigureSetLdapPath(LdapPath)
+                    .ConfigureLdapDomain(LdapDomain)
+                    .SearchUserBy(wrongUser, RightPassword);
+            }
+            catch (AdException e)
+            {
+                Assert.AreEqual(AdError.UserNotFound, e.AdError);
+                throw;
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(AdException))]
+        public void WrongLdapDomainTest()
+        {
+            const string wrongLdapDomain = "Lepo-Lepo-Lepo";
+            try
+            {
+                new AdAuthenticator()
+                    .ConfigureSetLdapPath(LdapPath)
+                    .ConfigureLdapDomain(wrongLdapDomain)
+                    .SearchUserBy(RightUser, RightPassword);
+            }
+            catch (AdException e)
+            {
+                Assert.AreEqual(AdError.InvalidLdapDomain, e.AdError);
+                throw;
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(AdException))]
+        public void WrongLdapPathTest()
+        {
+            const string wrongLdapPath = "Lepo-Lepo-Lepo";
+            try
+            {
+                new AdAuthenticator()
+                    .ConfigureSetLdapPath(wrongLdapPath)
+                    .ConfigureLdapDomain(LdapDomain)
+                    .SearchUserBy(RightUser, RightPassword);
+            }
+            catch (AdException e)
+            {
+                Assert.AreEqual(AdError.InvalidLdapPath, e.AdError);
+                throw;
+            }
         }
     }
 }

@@ -27,6 +27,7 @@ namespace AdAuthentication
     public class AdException : Exception
     {
         public AdException(string msg) : this(AdError.Generic, msg){}
+        public AdException(string msg, Exception e) : this(AdError.Generic, msg, e) { }
         public AdException(Exception e = null) : this(AdError.Generic, "", e) { }
         public AdException(AdError erro, string msg, Exception e = null) : base(msg, e)
         {

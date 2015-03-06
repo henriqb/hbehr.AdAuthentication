@@ -36,7 +36,7 @@ namespace AdAuthentication
             Mail = principal.GetMail();
             Phone = principal.GetPhone();
             Company = principal.GetCompany();
-            AdGroups = groups.Select(x => new AdGroup { Name = x.DisplayName, Code = x.SamAccountName });
+            AdGroups = groups.Select(x => new AdGroup { Name = x.DisplayName, Code = x.SamAccountName }).ToArray();
         }
 
         public string Name { get; private set; }
