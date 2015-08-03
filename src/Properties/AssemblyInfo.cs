@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("AdAuthentication")]
 [assembly: AssemblyDescription("Plugin for easy Ad Authentication")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Henrique Behr")]
+[assembly: AssemblyCompany("Henrique Borba Behr")]
 [assembly: AssemblyProduct("AdAuthentication")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyCopyright("Copyright ©  2014 - 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
