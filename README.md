@@ -14,74 +14,74 @@ Get it on nuget: https://www.nuget.org/packages/hbehr-AdAuthentication/
 Create a new instance of the class
 
 *Criar uma nova instância da classe*
-
-      AdAuthenticator adAuthenticator = new AdAuthenticator();
-
+```C#
+AdAuthenticator adAuthenticator = new AdAuthenticator();
+```
 Configure
 
 *Configurar*,
-
-      string ldapPath = "LDAP://DC=radixengrj,DC=matriz";
-      string ldapDomain = "radixengrj";
-      adAuthenticator
-          .ConfigureSetLdapPath(ldapPath)
-          .ConfigureLdapDomain(ldapDomain);
-          
+```C#
+string ldapPath = "LDAP://DC=radixengrj,DC=matriz";
+string ldapDomain = "radixengrj";
+adAuthenticator
+	.ConfigureSetLdapPath(ldapPath)
+	.ConfigureLdapDomain(ldapDomain);
+```
 If you are using Windows Authentication, to fetch the user using the system:
 
 *Se estiver usando windows Authentication, para buscar o usuário que está usando o sistema:*
-
-       AdUser adUser = adAuthenticator.GetUserFromAd();
-      
+```C#
+AdUser adUser = adAuthenticator.GetUserFromAd();
+```  
 If you want to authenticate via login / password, use the function:
 
 *Caso queira autenticar via login/senha, usar a função:*
-
-      string login = "henrique.behr";
-      string password = "*******";
-      AdUser adUser = adAuthenticator.SearchUserBy(login, password);
-      
+```C#
+string login = "henrique.behr";
+string password = "*******";
+AdUser adUser = adAuthenticator.SearchUserBy(login, password);
+```
 If you want to search an user in the AD Directory using the login:
 
 *Para buscar um usuário no Diretório AD pelo login:*
-
-	 string login = "henrique.behr"
-	 AdUser adUser = adAuthentication.GetUserFromAdBy(login);
-
+```C#
+string login = "henrique.behr"
+AdUser adUser = adAuthentication.GetUserFromAdBy(login);
+```
 	  
 Supports *method-chain* :
 
 *Suporta method-chain:*
-
-      string ldapPath = "LDAP://DC=radixengrj,DC=matriz";
-      string ldapDomain = "radixengrj";
-      AdUser adUser = new AdAuthenticator()
-          .ConfigureSetLdapPath(ldapPath)
-          .ConfigureLdapDomain(ldapDomain)
-          .GetUserFromAd();
-          
+```C#
+string ldapPath = "LDAP://DC=radixengrj,DC=matriz";
+string ldapDomain = "radixengrj";
+AdUser adUser = new AdAuthenticator()
+	.ConfigureSetLdapPath(ldapPath)
+	.ConfigureLdapDomain(ldapDomain)
+	.GetUserFromAd();
+```
 ##Data Structure
 
 User Ad:
 
 *Usuário Ad*
-
-       public class ADUser
-       {
-           public string Name { get; private set; }
-           public string Login { get; private set; }
-           public IEnumerable <AdGroup> AdGroups { get; private set; }
-       }
-      
+```C#
+public class ADUser
+{
+	public string Name { get; private set; }
+	public string Login { get; private set; }
+	public IEnumerable <AdGroup> AdGroups { get; private set; }
+}
+```
 Ad Groups:
 
 *Grupos Ad*
-
-       public class AdGroup
-       {
-           public string Name {get; set; }
-       }
-      
+```C#
+public class AdGroup
+{
+	public string Name {get; set; }
+}
+``` 
 #### Error Types
 
 The exceptions thrown are of type: **AdException**, they come with an identification *AdError* errors that are treated include:
