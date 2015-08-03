@@ -5,6 +5,11 @@ Implements Ad authenticator for asp.net, fast and convenient. Can be used with w
 
 *Implementa autenticador Ad para asp.net, rápido e prático. Pode ser usado com windows authentication ou login/senha.*
 
+## Instalation
+Get it on nuget: https://www.nuget.org/packages/hbehr-AdAuthentication/
+
+	PM> Install-Package hbehr-AdAuthentication
+
 ## How to use
 Create a new instance of the class
 
