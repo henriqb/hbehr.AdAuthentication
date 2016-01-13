@@ -112,5 +112,14 @@ namespace AdAuthentication
                 throw new AdException("Unkown Error", e);
             }
         }
+
+        public IEnumerable<string> GetAllUsers()
+        {
+            PrincipalContext AD = GetPrincipalContext();
+            UserPrincipal u = new UserPrincipal(AD);
+            PrincipalSearcher search = new PrincipalSearcher(u);
+
+            return search.FindAll().Select(x => x.SamAccountName).ToList();
+        }
     }
 }
