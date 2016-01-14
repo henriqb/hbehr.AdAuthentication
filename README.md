@@ -17,9 +17,9 @@ Create a new instance of the class
 ```C#
 AdAuthenticator adAuthenticator = new AdAuthenticator();
 ```
-Configure
+Configure in code
 
-*Configurar*,
+*Configurar pelo código*,
 ```C#
 string ldapPath = "LDAP://DC=radixengrj,DC=matriz";
 string ldapDomain = "radixengrj";
@@ -27,6 +27,18 @@ adAuthenticator
 	.ConfigureSetLdapPath(ldapPath)
 	.ConfigureLdapDomain(ldapDomain);
 ```
+Configure in .config, just add the folowing keys to the LdapPath/Domain
+
+*Configurar pelo .config* adicionar as chaves para o LdapPath/Domain
+```xml
+<configuration>
+  <appSettings>
+    <add key="LdapPath" value="LDAP://DC=radixengrj,DC=matriz" />
+    <add key="LdapDomain" value="radixengrj" />
+  </appSettings>
+</configuration>
+```
+
 If you are using Windows Authentication, to fetch the user using the system:
 
 *Se estiver usando windows Authentication, para buscar o usuário que está usando o sistema:*
@@ -41,14 +53,22 @@ string login = "henrique.behr";
 string password = "*******";
 AdUser adUser = adAuthenticator.SearchUserBy(login, password);
 ```
-If you want to search an user in the AD Directory using the login:
+If you want to search an user in the AD using the login:
 
-*Para buscar um usuário no Diretório AD pelo login:*
+*Para buscar um usuário no AD pelo login:*
 ```C#
 string login = "henrique.behr"
 AdUser adUser = adAuthentication.GetUserFromAdBy(login);
 ```
-	  
+
+Search for all users or groups in the AD:
+
+*Buscar por todos os usuários ou grupos do AD*
+```C#
+IEnumerable<AdGroup> groups = adAuthenticator.GetAdGroups();
+IEnumerable<AdUser> users = adAuthenticator.GetAllUsers();
+```
+
 Supports *method-chain* :
 
 *Suporta method-chain:*
@@ -60,6 +80,7 @@ AdUser adUser = new AdAuthenticator()
 	.ConfigureLdapDomain(ldapDomain)
 	.GetUserFromAd();
 ```
+
 ##Data Structure
 
 User Ad:
@@ -83,9 +104,10 @@ Ad Groups:
 public class AdGroup
 {
 	public string Code { get; set; }
-	public string Name {get; set; }
+	public string Name { get; set; }
 }
-``` 
+```
+
 #### Error Types
 
 The exceptions thrown are of type: **AdException**, they come with an identification *AdError* errors that are treated include:
