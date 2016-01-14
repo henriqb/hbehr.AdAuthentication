@@ -1,6 +1,6 @@
 ﻿/*
  * The MIT License (MIT)
- * Copyright (c) 2014 Henrique Borba Behr
+ * Copyright (c) 2014 - 2016 Henrique Borba Behr
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -113,13 +113,12 @@ namespace AdAuthentication
             }
         }
 
-        public IEnumerable<string> GetAllUsers()
+        public IEnumerable<AdUser> GetAllUsers()
         {
-            PrincipalContext AD = GetPrincipalContext();
-            UserPrincipal u = new UserPrincipal(AD);
-            PrincipalSearcher search = new PrincipalSearcher(u);
-
-            return search.FindAll().Select(x => x.SamAccountName).ToList();
+            PrincipalContext principalContext = GetPrincipalContext();
+            var u = new UserPrincipal(principalContext);
+            var search = new PrincipalSearcher(u);
+            return search.FindAll().Select(x => new AdUser(x, new List<Principal>()));
         }
     }
 }
