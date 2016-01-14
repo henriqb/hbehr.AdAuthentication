@@ -90,11 +90,11 @@ User Ad:
 public class ADUser
 {
 	public string Name { get; private set; }
-        public string Login { get; private set; }
-        public string Mail { get; private set; }
-        public string Phone { get; private set; }
-        public string Company { get; private set; }
-        public IEnumerable<AdGroup> AdGroups { get; private set; }
+	public string Login { get; private set; }
+	public string Mail { get; private set; }
+	public string Phone { get; private set; }
+	public string Company { get; private set; }
+	public IEnumerable<AdGroup> AdGroups { get; private set; }
 }
 ```
 Ad Groups:
