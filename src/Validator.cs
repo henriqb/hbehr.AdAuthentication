@@ -32,8 +32,7 @@ namespace AdAuthentication
         private const int WrongUserOrPassword = -2147023570;
         private const int InvalidLdapPath1 = -2147016661;
         private const int InvalidLdapPath2 = -2147467259;
-        private const int InvalidLdapPathComError = -2147467259;
-
+        
         public Validator(AdAuthenticator adAuthenticator)
         {
             _adAuthenticator = adAuthenticator;
@@ -92,7 +91,7 @@ namespace AdAuthentication
             }
             catch (COMException e)
             {
-                if (e.ErrorCode == InvalidLdapPathComError)
+                if (e.ErrorCode == InvalidLdapPath1 || e.ErrorCode == InvalidLdapPath2)
                 {
                     throw new AdException(AdError.InvalidLdapPath, "Invalid Ldap Path", e);
                 }

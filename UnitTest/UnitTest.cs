@@ -73,6 +73,29 @@ namespace UnitTest
         }
 
         [TestMethod]
+        public void TestFindAllUsers()
+        {
+            var list = new AdAuthenticator()
+                .ConfigureSetLdapPath(LdapPath)
+                .ConfigureLdapDomain(LdapDomain)
+                .GetAllUsers()
+                .ToArray();
+
+            Assert.IsNotNull(list);
+            Assert.IsTrue(list.Count() > 1);
+            Assert.IsTrue(list.Any(u => string.Equals(u.Login, RightUser)));
+        }
+
+        [TestMethod]
+        public void TestGetLdapSettingFromConfig()
+        {
+            AdUser user = new AdAuthenticator().SearchUserBy(RightUser, RightPassword);
+
+            Assert.IsNotNull(user);
+            Assert.AreEqual(RightUser, user.Login);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(AdException))]
         public void WrongPasswordTest()
         {
@@ -89,20 +112,6 @@ namespace UnitTest
                 Assert.AreEqual(AdError.IncorrectPassword, e.AdError);
                 throw;
             }
-        }
-
-        [TestMethod]
-        public void TestFindAllUsers()
-        {
-            var list = new AdAuthenticator()
-                .ConfigureSetLdapPath(LdapPath)
-                .ConfigureLdapDomain(LdapDomain)
-                .GetAllUsers()
-                .ToArray();
-
-            Assert.IsNotNull(list);
-            Assert.IsTrue(list.Count() > 1);
-            Assert.IsTrue(list.Any(u => string.Equals(u.Login, RightUser)));
         }
         
         [TestMethod]

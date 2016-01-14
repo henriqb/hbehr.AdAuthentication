@@ -22,6 +22,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Web;
@@ -30,8 +31,23 @@ namespace AdAuthentication
 {
     public class AdAuthenticator
     {
-        internal string LdapDomain { get; set; }
-        internal string LdapPath { get; set; }
+        public AdAuthenticator()
+        {
+            var appSettings = new AppSettingsReader();
+            try
+            {
+                LdapPath = appSettings.GetValue("LdapPath", typeof(string)).ToString();
+            }
+            catch { }
+            try
+            {
+                LdapDomain = appSettings.GetValue("LdapDomain", typeof(string)).ToString();
+            }
+            catch { }
+        }
+
+        internal string LdapDomain { get; private set; }
+        internal string LdapPath { get; private set; }
 
         public AdAuthenticator ConfigureLdapDomain(string ldapDomain)
         {
