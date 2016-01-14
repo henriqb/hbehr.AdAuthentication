@@ -1,6 +1,6 @@
 ﻿/*
  * The MIT License (MIT)
- * Copyright (c) 2014 - 2015 Henrique Borba Behr
+ * Copyright (c) 2014 - 2016 Henrique Borba Behr
 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@ namespace UnitTest
     {
         private const string LdapPath = "LDAP://DC=radixengrj,DC=matriz";
         private const string LdapDomain = "radixengrj";
-        private const string RightUser = "renan.oliveira";
+        private const string RightUser = "henrique.beh";
         private const string RightPassword = "xxxx-sua-senha-aqui-xxxx";
 
         [TestMethod]
@@ -95,13 +95,14 @@ namespace UnitTest
         public void TestFindAllUsers()
         {
             var list = new AdAuthenticator()
-                    .ConfigureSetLdapPath(LdapPath)
-                    .ConfigureLdapDomain(LdapDomain)
-                    .GetAllUsers();
+                .ConfigureSetLdapPath(LdapPath)
+                .ConfigureLdapDomain(LdapDomain)
+                .GetAllUsers()
+                .ToArray();
 
             Assert.IsNotNull(list);
             Assert.IsTrue(list.Count() > 1);
-            Assert.IsTrue(list.Any(u => string.Equals(u, RightUser)));
+            Assert.IsTrue(list.Any(u => string.Equals(u.Login, RightUser)));
         }
         
         [TestMethod]
