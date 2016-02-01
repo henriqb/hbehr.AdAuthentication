@@ -20,6 +20,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+using System.Globalization;
 using System.Linq;
 using AdAuthentication;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -31,7 +33,7 @@ namespace UnitTest
     {
         private const string LdapPath = "LDAP://DC=radixengrj,DC=matriz";
         private const string LdapDomain = "radixengrj";
-        private const string RightUser = "renan.oliveira";
+        private const string RightUser = "henrique.beh";
         private const string RightPassword = "xxx - sua senha aqui - xxx";
 
         [TestMethod]
@@ -92,15 +94,16 @@ namespace UnitTest
             var ad = new AdAuthenticator()
                 .ConfigureSetLdapPath(LdapPath)
                 .ConfigureLdapDomain(LdapDomain);
+
             int total;
-            var list = ad.GetUsersByFilter("--filtro--", 1, out total);
+            var list = ad.GetUsersByFilter(RightUser.First().ToString(CultureInfo.InvariantCulture), 1, out total, 9999);
             Assert.IsNotNull(list);
+            Assert.IsTrue(total >= list.Count());
+            Assert.IsTrue(list.Any(u => string.Equals(u.Login, RightUser)));
 
-            list = ad.GetUsersByFilter("--filtro--", 1, out total);
+            list = ad.GetUsersByFilter(RightUser.Last().ToString(CultureInfo.InvariantCulture), 1, out total, 9999);
             Assert.IsNotNull(list);
-
-            list = ad.GetUsersByFilter("--filtro--", 1, out total);
-            Assert.IsNotNull(list);
+            Assert.IsTrue(total >= list.Count());
             Assert.IsTrue(list.Any(u => string.Equals(u.Login, RightUser)));
         }
 
