@@ -23,7 +23,6 @@
 using System.Linq;
 using AdAuthentication;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics;
 
 namespace UnitTest
 {
