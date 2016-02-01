@@ -136,5 +136,15 @@ namespace AdAuthentication
             var search = new PrincipalSearcher(u);
             return search.FindAll().Select(x => new AdUser(x, new List<Principal>()));
         }
+
+        public IEnumerable<AdUser> GetUsersByFilter(string text, int page, out int total, int itemsPerPage = 5)
+        {
+            PrincipalContext principalContext = GetPrincipalContext();
+            var u = new UserPrincipal(principalContext);
+            u.SamAccountName = "*" + text + "*";
+            var search = new PrincipalSearcher(u);
+            total = search.FindAll().Count();
+            return search.FindAll().Skip(page - 1).Take(itemsPerPage).Select(x => new AdUser(x, new List<Principal>()));
+        }
     }
 }

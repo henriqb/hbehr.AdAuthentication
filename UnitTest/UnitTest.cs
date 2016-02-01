@@ -31,8 +31,8 @@ namespace UnitTest
     {
         private const string LdapPath = "LDAP://DC=radixengrj,DC=matriz";
         private const string LdapDomain = "radixengrj";
-        private const string RightUser = "henrique.beh";
-        private const string RightPassword = "xxxx-sua-senha-aqui-xxxx";
+        private const string RightUser = "renan.oliveira";
+        private const string RightPassword = "xxx - sua senha aqui - xxx";
 
         [TestMethod]
         public void RightPasswordTest()
@@ -83,6 +83,24 @@ namespace UnitTest
 
             Assert.IsNotNull(list);
             Assert.IsTrue(list.Count() > 1);
+            Assert.IsTrue(list.Any(u => string.Equals(u.Login, RightUser)));
+        }
+
+        [TestMethod]
+        public void TestFindUsersByFilter()
+        {
+            var ad = new AdAuthenticator()
+                .ConfigureSetLdapPath(LdapPath)
+                .ConfigureLdapDomain(LdapDomain);
+            int total;
+            var list = ad.GetUsersByFilter("--filtro--", 1, out total);
+            Assert.IsNotNull(list);
+
+            list = ad.GetUsersByFilter("--filtro--", 1, out total);
+            Assert.IsNotNull(list);
+
+            list = ad.GetUsersByFilter("--filtro--", 1, out total);
+            Assert.IsNotNull(list);
             Assert.IsTrue(list.Any(u => string.Equals(u.Login, RightUser)));
         }
 
