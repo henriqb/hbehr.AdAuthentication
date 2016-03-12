@@ -69,6 +69,16 @@ IEnumerable<AdGroup> groups = adAuthenticator.GetAdGroups();
 IEnumerable<AdUser> users = adAuthenticator.GetAllUsers();
 ```
 
+Filter Users in the AD, either by Username or Name (paginated):
+
+*Filtrar usuários no AD, pode ser por login ou nome (paginado).*
+
+```C#
+int page = 1, rowsPerPage = 20, total;
+IEnumerable<AdUser> users = adAuthenticator.GetUsersByFilter("hen", page, out total, rowsPerPage); // By Username
+users = ad.GetUsersByNameFilter("Behr", page, out total, rowsPerPage); // By Name
+```
+
 Supports *method-chain* :
 
 *Suporta method-chain:*
@@ -87,7 +97,7 @@ User Ad:
 
 *Usuário Ad*
 ```C#
-public class ADUser
+public class AdUser
 {
 	public string Name { get; private set; }
 	public string Login { get; private set; }
@@ -118,3 +128,12 @@ The exceptions thrown are of type: **AdException**, they come with an identifica
          InvalidLdapDomain * Invalid Ldap Domain, verify network configuration *
          UserNotFound * Login user not found in AD *
          IncorrectPassword * Login found but incorrect password *
+         ExpiredPassword * User password Expired *
+         UserMustResetPassword 
+         NotPermittedToLogonAtThisTime
+         NotPermittedToLogonAtThisWorkstation
+         AccountDisabled
+         UserNotGrantedRequestedLogonType
+         AccountExpired
+         AccountLocked
+
