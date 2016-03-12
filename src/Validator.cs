@@ -84,8 +84,7 @@ namespace AdAuthentication
                 }
                 if (e.ErrorCode == WrongUserOrPassword)
                 {
-                    _adAuthenticator.GetUserFromAdBy(login); // throws AdError.UserNotFound if user dosen't exists !
-                    throw new AdException(AdError.IncorrectPassword, "Invalid Password", e); // Or the password is wrong !
+                    AdErrorCode.TreatErrorMessage(e);
                 }
                 throw;
             }

@@ -34,6 +34,7 @@ namespace UnitTest
         private const string LdapPath = "LDAP://DC=radixengrj,DC=matriz";
         private const string LdapDomain = "radixengrj";
         private const string RightUser = "henrique.beh";
+        private const string NameRightUser = "Henrique Borba Behr";
         private const string RightPassword = "xxx - sua senha aqui - xxx";
 
         [TestMethod]
@@ -98,13 +99,36 @@ namespace UnitTest
             int total;
             var list = ad.GetUsersByFilter(RightUser.First().ToString(CultureInfo.InvariantCulture), 1, out total, 9999);
             Assert.IsNotNull(list);
-            Assert.IsTrue(total >= list.Count());
-            Assert.IsTrue(list.Any(u => string.Equals(u.Login, RightUser)));
+            var adUsers = list as AdUser[] ?? list.ToArray();
+            Assert.IsTrue(total >= adUsers.Count());
+            Assert.IsTrue(adUsers.Any(u => string.Equals(u.Login, RightUser)));
 
             list = ad.GetUsersByFilter(RightUser.Last().ToString(CultureInfo.InvariantCulture), 1, out total, 9999);
             Assert.IsNotNull(list);
-            Assert.IsTrue(total >= list.Count());
-            Assert.IsTrue(list.Any(u => string.Equals(u.Login, RightUser)));
+            adUsers = list as AdUser[] ?? list.ToArray();
+            Assert.IsTrue(total >= adUsers.Count());
+            Assert.IsTrue(adUsers.Any(u => string.Equals(u.Login, RightUser)));
+        }
+
+        [TestMethod]
+        public void TestFindUsersByFilterName()
+        {
+            var ad = new AdAuthenticator()
+                .ConfigureSetLdapPath(LdapPath)
+                .ConfigureLdapDomain(LdapDomain);
+
+            int total;
+            var list = ad.GetUsersByNameFilter(NameRightUser.First().ToString(CultureInfo.InvariantCulture), 1, out total, 9999);
+            Assert.IsNotNull(list);
+            var adUsers = list as AdUser[] ?? list.ToArray();
+            Assert.IsTrue(total >= adUsers.Count());
+            Assert.IsTrue(adUsers.Any(u => string.Equals(u.Login, RightUser)));
+
+            list = ad.GetUsersByNameFilter(RightUser.Last().ToString(CultureInfo.InvariantCulture), 1, out total, 9999);
+            Assert.IsNotNull(list);
+            adUsers = list as AdUser[] ?? list.ToArray();
+            Assert.IsTrue(total >= adUsers.Count());
+            Assert.IsTrue(adUsers.Any(u => string.Equals(u.Login, RightUser)));
         }
 
         [TestMethod]

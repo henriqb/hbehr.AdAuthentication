@@ -28,6 +28,14 @@ namespace AdAuthentication
         InvalidLdapPath,
         InvalidLdapDomain,
         UserNotFound,
-        IncorrectPassword
+        IncorrectPassword,
+        ExpiredPassword,
+        UserMustResetPassword,
+        NotPermittedToLogonAtThisTime,
+        NotPermittedToLogonAtThisWorkstation,
+        AccountDisabled,
+        UserNotGrantedRequestedLogonType,
+        AccountExpired,
+        AccountLocked
     }
 }

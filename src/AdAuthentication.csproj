@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdErrorCode.cs" />
     <Compile Include="PrincipalExtension.cs" />
     <Compile Include="AdAuthenticator.cs" />
     <Compile Include="AdException.cs" />
@@ -62,13 +63,7 @@ copy /Y "$(TargetDir)$(ProjectName).pdb" "$(SolutionDir)\..\binary\$(TargetFrame
   <Target Name="BeforeBuild">
   </Target> -->
   <Target Name="AfterBuild">
-	<MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v4.5.1'"
-		Projects="$(MSBuildProjectFile)"
-		Properties="TargetFrameworkVersion=v4.5"
-		RunEachTargetSeparately="true"  />
-	<MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v4.5'"
-		Projects="$(MSBuildProjectFile)"
-		Properties="TargetFrameworkVersion=v4.0"
-		RunEachTargetSeparately="true"  />
-  </Target>  
+    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v4.5.1'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.5" RunEachTargetSeparately="true" />
+    <MSBuild Condition=" '$(TargetFrameworkVersion)' == 'v4.5'" Projects="$(MSBuildProjectFile)" Properties="TargetFrameworkVersion=v4.0" RunEachTargetSeparately="true" />
+  </Target>
 </Project>
