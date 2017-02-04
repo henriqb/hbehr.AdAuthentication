@@ -57,7 +57,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\hbehr.AdAuthentication.csproj">
+    <ProjectReference Include="..\hbehr.AdAuthentication\hbehr.AdAuthentication.csproj">
       <Project>{E7A2E50E-3CB0-472F-9167-767B7A2C5DD2}</Project>
       <Name>hbehr.AdAuthentication</Name>
     </ProjectReference>

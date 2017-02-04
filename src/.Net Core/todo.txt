@@ -1,0 +1,4 @@
+Waiting for implementation of System.DirectoryServices in asp.net core
+
+https://github.com/dotnet/corefx/issues/2089
+https://github.com/dotnet/corefx/tree/master/src/System.DirectoryServices.AccountManagement/src/System/DirectoryServices
