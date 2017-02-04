@@ -1,4 +1,4 @@
-AdAuthenticator
+hbehr.AdAuthentication
 ==============
 
 Implements Ad authenticator for asp.net, fast and convenient. Can be used with windows authentication and login / password.
