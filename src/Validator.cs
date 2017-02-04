@@ -1,6 +1,6 @@
 ﻿/*
  * The MIT License (MIT)
- * Copyright (c) 2014 - 2016 Henrique Borba Behr
+ * Copyright (c) 2014 - 2017 Henrique Borba Behr
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@ using System;
 using System.DirectoryServices;
 using System.Runtime.InteropServices;
 
-namespace AdAuthentication
+namespace hbehr.AdAuthentication
 {
     internal class Validator
     {

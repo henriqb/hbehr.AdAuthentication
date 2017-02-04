@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26127.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdAuthentication", "AdAuthentication.csproj", "{E7A2E50E-3CB0-472F-9167-767B7A2C5DD2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hbehr.AdAuthentication", "hbehr.AdAuthentication.csproj", "{E7A2E50E-3CB0-472F-9167-767B7A2C5DD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "..\UnitTest\UnitTest.csproj", "{F6550387-D779-4CEB-B0CE-6820776669CF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hbehr.UnitTest", "..\UnitTest\hbehr.UnitTest.csproj", "{F6550387-D779-4CEB-B0CE-6820776669CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
